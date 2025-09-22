@@ -6,10 +6,10 @@ class AIChatScreen extends StatefulWidget {
   const AIChatScreen({super.key});
 
   @override
-  _AIChatScreenState createState() => _AIChatScreenState();
+  AIChatScreenState createState() => AIChatScreenState();
 }
 
-class _AIChatScreenState extends State<AIChatScreen> {
+class AIChatScreenState extends State<AIChatScreen> {
   final TextEditingController _promptController = TextEditingController();
   final List<Map<String, String>> _conversation = [];
   bool _isLoading = false;

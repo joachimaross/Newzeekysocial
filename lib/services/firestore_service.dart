@@ -85,13 +85,7 @@ class FirestoreService {
   }
 
   // Update user profile
-  Future<void> updateUserProfile(String userId, String displayName, String? photoURL) {
-    final Map<String, dynamic> userData = {
-      'displayName': displayName,
-    };
-    if (photoURL != null) {
-      userData['photoURL'] = photoURL;
-    }
-    return _db.collection('users').doc(userId).set(userData, SetOptions(merge: true));
+  Future<void> updateUserProfile(String userId, Map<String, dynamic> data) {
+    return _db.collection('users').doc(userId).set(data, SetOptions(merge: true));
   }
 }

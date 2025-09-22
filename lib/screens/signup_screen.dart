@@ -7,10 +7,10 @@ class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignUpScreen> createState() => SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -30,8 +30,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
           _emailController.text,
           _passwordController.text,
         );
+        if (!mounted) return;
         Navigator.of(context).pop();
       } catch (e) {
+        if (!mounted) return;
         setState(() {
           _errorMessage = e.toString();
         });

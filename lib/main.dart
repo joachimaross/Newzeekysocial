@@ -11,10 +11,10 @@ import 'package:myapp/services/ai_service.dart';
 import 'package:myapp/services/auth_service.dart';
 import 'package:myapp/services/firestore_service.dart';
 import 'package:myapp/services/storage_service.dart';
+import 'package:myapp/services/notification_service.dart'; // Import NotificationService
 import 'package:myapp/models/post_model.dart';
 import 'package:myapp/models/chat_room_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -30,6 +30,11 @@ void main() async {
         Provider<FirestoreService>(create: (_) => FirestoreService()),
         Provider<AIService>(create: (_) => AIService()),
         Provider<StorageService>(create: (_) => StorageService()),
+        // ProxyProvider for NotificationService
+        ProxyProvider<FirestoreService, NotificationService>(
+          update: (context, firestoreService, previous) =>
+              NotificationService(firestoreService),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -85,11 +90,27 @@ class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
   @override
-  _MainScreenState createState() => _MainScreenState();
+  MainScreenState createState() => MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeNotifications();
+  }
+
+  void _initializeNotifications() async {
+    final notificationService = Provider.of<NotificationService>(context, listen: false);
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final user = authService.currentUser;
+    if (user != null) {
+      await notificationService.initNotifications();
+      await notificationService.saveTokenForCurrentUser(user.uid);
+    }
+  }
 
   static const List<Widget> _widgetOptions = <Widget>[
     FeedScreen(),
@@ -107,7 +128,7 @@ class _MainScreenState extends State<MainScreen> {
     final postController = TextEditingController();
     final firestoreService = Provider.of<FirestoreService>(context, listen: false);
     final authService = Provider.of<AuthService>(context, listen: false);
-    final currentUser = authService.getCurrentUser();
+    final currentUser = authService.currentUser;
 
     showDialog(
       context: context,
@@ -131,6 +152,7 @@ class _MainScreenState extends State<MainScreen> {
                     postController.text,
                     currentUser.uid,
                   );
+                  if (!mounted) return;
                   Navigator.pop(context);
                 }
               },
@@ -161,8 +183,13 @@ class _MainScreenState extends State<MainScreen> {
           ),
            IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () {
-              authService.signOut();
+            onPressed: () async {
+              final user = authService.currentUser;
+              if (user != null) {
+                final notificationService = Provider.of<NotificationService>(context, listen: false);
+                await notificationService.deleteTokenForCurrentUser(user.uid);
+              }
+              await authService.signOut();
             },
           ),
           IconButton(
@@ -301,7 +328,7 @@ class ChatScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final chatRoom = chatRooms[index];
               final authService = Provider.of<AuthService>(context, listen: false);
-              final currentUserId = authService.getCurrentUser()!.uid;
+              final currentUserId = authService.currentUser!.uid;
               final otherUserId = chatRoom.userIds.firstWhere((id) => id != currentUserId, orElse: () => 'Unknown');
 
               return ListTile(

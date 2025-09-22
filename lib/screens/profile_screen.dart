@@ -10,10 +10,10 @@ class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  ProfileScreenState createState() => ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _displayNameController = TextEditingController();
   File? _profileImage;
   final ImagePicker _picker = ImagePicker();
@@ -38,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final authService = Provider.of<AuthService>(context, listen: false);
     final firestoreService = Provider.of<FirestoreService>(context, listen: false);
     final storageService = Provider.of<StorageService>(context, listen: false);
-    final currentUser = authService.getCurrentUser();
+    final currentUser = authService.currentUser;
 
     if (currentUser != null) {
       String? profileImageUrl;
@@ -55,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _displayNameController.text,
         profileImageUrl,
       );
-
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Profile saved!')),
       );

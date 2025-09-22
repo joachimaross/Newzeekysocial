@@ -11,7 +11,7 @@ class UserListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: false);
-    final currentUserId = authService.getCurrentUser()!.uid;
+    final currentUserId = authService.currentUser!.uid;
 
     return Scaffold(
       appBar: AppBar(

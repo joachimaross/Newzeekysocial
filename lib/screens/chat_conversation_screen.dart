@@ -14,10 +14,10 @@ class ChatConversationScreen extends StatefulWidget {
       {super.key, required this.chatRoomId, required this.receiverId});
 
   @override
-  _ChatConversationScreenState createState() => _ChatConversationScreenState();
+  ChatConversationScreenState createState() => ChatConversationScreenState();
 }
 
-class _ChatConversationScreenState extends State<ChatConversationScreen> {
+class ChatConversationScreenState extends State<ChatConversationScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
 
@@ -32,9 +32,11 @@ class _ChatConversationScreenState extends State<ChatConversationScreen> {
   Future<void> _sendImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
+      if (!mounted) return;
       final storageService = Provider.of<StorageService>(context, listen: false);
       final imageUrl = await storageService.uploadImage(image);
       if (imageUrl != null) {
+        if (!mounted) return;
         final firestoreService = Provider.of<FirestoreService>(context, listen: false);
         firestoreService.sendMessage(widget.receiverId, imageUrl, messageType: 'image');
       }
