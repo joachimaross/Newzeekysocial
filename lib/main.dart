@@ -9,6 +9,7 @@ import 'package:zeeky_social/screens/zeeky_chat_screen.dart';
 import 'package:zeeky_social/services/ai_service.dart';
 import 'package:zeeky_social/services/auth_service.dart';
 import 'package:zeeky_social/services/firestore_service.dart';
+import 'package:zeeky_social/services/storage_service.dart';
 import 'package:zeeky_social/models/post_model.dart';
 import 'package:zeeky_social/models/chat_room_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,6 +28,7 @@ void main() async {
         Provider<AuthService>(create: (_) => AuthService()),
         Provider<FirestoreService>(create: (_) => FirestoreService()),
         Provider<AIService>(create: (_) => AIService()),
+        Provider<StorageService>(create: (_) => StorageService()),
       ],
       child: const ZeekySocialApp(),
     ),

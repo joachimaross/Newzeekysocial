@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:zeeky_social/services/firestore_service.dart';
+import 'package:zeeky_social/services/storage_service.dart';
 import 'package:zeeky_social/models/chat_message_model.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ChatConversationScreen extends StatefulWidget {
   final String chatRoomId;
@@ -17,12 +19,25 @@ class ChatConversationScreen extends StatefulWidget {
 
 class _ChatConversationScreenState extends State<ChatConversationScreen> {
   final TextEditingController _messageController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
 
   void _sendMessage() {
     if (_messageController.text.isNotEmpty) {
       final firestoreService = Provider.of<FirestoreService>(context, listen: false);
-      firestoreService.sendMessage(widget.receiverId, _messageController.text);
+      firestoreService.sendMessage(widget.receiverId, _messageController.text, messageType: 'text');
       _messageController.clear();
+    }
+  }
+
+  Future<void> _sendImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      final storageService = Provider.of<StorageService>(context, listen: false);
+      final imageUrl = await storageService.uploadImage(image);
+      if (imageUrl != null) {
+        final firestoreService = Provider.of<FirestoreService>(context, listen: false);
+        firestoreService.sendMessage(widget.receiverId, imageUrl, messageType: 'image');
+      }
     }
   }
 
@@ -58,17 +73,21 @@ class _ChatConversationScreenState extends State<ChatConversationScreen> {
                     receiverId: data['receiverId'] ?? '',
                     message: data['message'] ?? '',
                     timestamp: (data['timestamp'] as Timestamp?)?.toDate() ?? DateTime.now(),
+                    messageType: data['messageType'] ?? 'text',
                   );
                 }).toList();
 
                 return ListView.builder(
                   itemCount: messages.length,
+                  reverse: true, // To show latest messages at the bottom
                   itemBuilder: (context, index) {
                     final message = messages[index];
-                    // For now, we'll just display the message content.
-                    // In a real app, you'd have different layouts for sent/received messages.
+                    final bool isImage = message.messageType == 'image';
+
                     return ListTile(
-                      title: Text(message.message),
+                      title: isImage
+                          ? Image.network(message.message)
+                          : Text(message.message),
                       subtitle: Text('From: \${message.senderId.substring(0, 6)}...'),
                     );
                   },
@@ -80,6 +99,10 @@ class _ChatConversationScreenState extends State<ChatConversationScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
+                IconButton(
+                  icon: const Icon(Icons.attach_file),
+                  onPressed: _sendImage,
+                ),
                 Expanded(
                   child: TextField(
                     controller: _messageController,

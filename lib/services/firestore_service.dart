@@ -43,7 +43,7 @@ class FirestoreService {
   }
 
   // Send a message
-  Future<void> sendMessage(String receiverId, String message) async {
+  Future<void> sendMessage(String receiverId, String message, {String messageType = 'text'}) async {
     final currentUser = _auth.currentUser;
     if (currentUser == null) {
       return;
@@ -63,6 +63,7 @@ class FirestoreService {
       'receiverId': receiverId,
       'message': message,
       'timestamp': timestamp,
+      'messageType': messageType,
     };
 
     // Add the new message to the messages subcollection
@@ -76,7 +77,7 @@ class FirestoreService {
     await _db.collection('chat_rooms').doc(chatRoomId).set(
       {
         'userIds': ids,
-        'lastMessage': message,
+        'lastMessage': messageType == 'image' ? 'Photo' : message,
         'lastMessageTimestamp': timestamp,
       },
       SetOptions(merge: true), // Use merge to create the doc if it doesn't exist
