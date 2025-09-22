@@ -6,6 +6,7 @@ import 'package:zeeky_social/screens/auth_gate.dart';
 import 'package:zeeky_social/screens/chat_conversation_screen.dart';
 import 'package:zeeky_social/screens/zeeky_chat_screen.dart';
 import 'package:zeeky_social/screens/profile_screen.dart';
+import 'package:zeeky_social/screens/user_list_screen.dart';
 import 'package:zeeky_social/services/ai_service.dart';
 import 'package:zeeky_social/services/auth_service.dart';
 import 'package:zeeky_social/services/firestore_service.dart';
@@ -267,54 +268,6 @@ class FeedScreen extends StatelessWidget {
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
 
-  void _showNewChatDialog(BuildContext context) {
-    final TextEditingController receiverIdController = TextEditingController();
-    final firestoreService = Provider.of<FirestoreService>(context, listen: false);
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('New Chat'),
-          content: TextField(
-            controller: receiverIdController,
-            decoration: const InputDecoration(hintText: "Enter receiver's user ID"),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final receiverId = receiverIdController.text;
-                if (receiverId.isNotEmpty) {
-                  final authService = Provider.of<AuthService>(context, listen: false);
-                  final currentUserId = authService.getCurrentUser()!.uid;
-                  List<String> ids = [currentUserId, receiverId];
-                  ids.sort();
-                  String chatRoomId = ids.join("_");
-
-                  Navigator.pop(context); // Close the dialog
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ChatConversationScreen(
-                        chatRoomId: chatRoomId,
-                        receiverId: receiverId,
-                      ),
-                    ),
-                  );
-                }
-              },
-              child: const Text('Chat'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final firestoreService = Provider.of<FirestoreService>(context);
@@ -372,8 +325,13 @@ class ChatScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showNewChatDialog(context),
-        child: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const UserListScreen()),
+          );
+        },
+        child: const Icon(Icons.person_add),
       ),
     );
   }
