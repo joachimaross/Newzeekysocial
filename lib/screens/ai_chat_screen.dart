@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zeeky_social/services/ai_service.dart';
+import 'package:myapp/services/ai_service.dart';
 
-class ZeekyChatScreen extends StatefulWidget {
-  const ZeekyChatScreen({super.key});
+class AIChatScreen extends StatefulWidget {
+  const AIChatScreen({super.key});
 
   @override
-  _ZeekyChatScreenState createState() => _ZeekyChatScreenState();
+  _AIChatScreenState createState() => _AIChatScreenState();
 }
 
-class _ZeekyChatScreenState extends State<ZeekyChatScreen> {
+class _AIChatScreenState extends State<AIChatScreen> {
   final TextEditingController _promptController = TextEditingController();
   final List<Map<String, String>> _conversation = [];
   bool _isLoading = false;
@@ -37,7 +37,7 @@ class _ZeekyChatScreenState extends State<ZeekyChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chat with Zeeky'),
+        title: const Text('AI Chat'),
       ),
       body: Column(
         children: [
@@ -80,7 +80,7 @@ class _ZeekyChatScreenState extends State<ZeekyChatScreen> {
                   child: TextField(
                     controller: _promptController,
                     decoration: const InputDecoration(
-                      hintText: 'Ask Zeeky anything...',
+                      hintText: 'Ask the AI anything...',
                     ),
                     onSubmitted: (_) => _sendPrompt(),
                   ),

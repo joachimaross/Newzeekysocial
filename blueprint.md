@@ -1,22 +1,54 @@
-# Zeeky Social Blueprint
+# Blueprint
 
 ## Overview
 
-Zeeky Social is a social networking application that allows users to connect with each other, share posts, and chat in real-time. The application is built with Flutter and leverages Firebase for backend services, including authentication, Firestore database, and cloud storage.
-
-## Design and Style
-
-The application follows Material Design 3 guidelines, with a modern and intuitive user interface. It features a bottom navigation bar for easy access to the main screens: Feed, Chat, and Profile. The app supports both light and dark themes, which can be toggled by the user.
-
-- **Typography**: The app uses the Lato font from Google Fonts for a clean and readable text.
-- **Color Scheme**: The color scheme is based on a deep purple seed color, which is used to generate a harmonious and accessible color palette for both light and dark modes.
+This document outlines the structure and features of the "My Awesome App" Flutter application. This app is a social media platform with a built-in AI assistant.
 
 ## Features
 
-- **Authentication**: Users can sign up and sign in using their email and password. The authentication state is managed using Firebase Authentication.
-- **Feed**: The feed screen displays a real-time stream of posts from all users. Users can create new posts, which are then added to the feed.
-- **Chat**: The chat feature allows users to have one-on-one conversations. Users can start a new chat by selecting a user from the user list. The chat screen displays a list of all active conversations, with the most recent message and timestamp.
-- **AI-Powered Chat**: The application includes a Zeeky Chat screen, which allows users to interact with a generative AI model. This feature can be used for a variety of purposes, such as generating creative text formats, answering questions, or providing assistance.
-- **User Profiles**: Users can view and edit their profiles, including their display name and profile picture. Profile pictures are uploaded to Firebase Storage and the profile information is stored in Firestore.
-- **User List**: The user list screen displays a list of all registered users, making it easy for users to find and connect with others.
-- **Theme Toggle**: Users can switch between light and dark themes to suit their preferences.
+- **Authentication:** Users can sign up and sign in using their email and password.
+- **Feed:** A chronological feed of posts from all users.
+- **Posts:** Users can create new posts with text content.
+- **Chat:** Users can chat with each other in real-time.
+- **AI Assistant:** A friendly AI assistant to answer user questions and provide help.
+- **Profile:** A profile screen where users can view their information.
+- **Theming:** The app supports both light and dark themes.
+
+## Project Structure
+
+```
+lib
+├── models
+│   ├── chat_room_model.dart
+│   ├── post_model.dart
+│   └── user_model.dart
+├── screens
+│   ├── ai_chat_screen.dart
+│   ├── auth_gate.dart
+│   ├── chat_conversation_screen.dart
+│   ├── home_screen.dart
+│   ├── login_screen.dart
+│   ├── profile_screen.dart
+│   ├── signup_screen.dart
+│   └── user_list_screen.dart
+├── services
+│   ├── ai_service.dart
+│   ├── auth_service.dart
+│   ├── firestore_service.dart
+│   └── storage_service.dart
+├── main.dart
+└── firebase_options.dart
+```
+
+## Current Task: Refactor App Name
+
+**Goal:** Rename the app from "Zeeky Social" to "My Awesome App".
+
+**Steps Taken:**
+
+1.  **Updated `pubspec.yaml`:** Changed the project name from `zeeky_social` to `myapp`.
+2.  **Renamed Files:** Renamed `lib/screens/zeeky_chat_screen.dart` to `lib/screens/ai_chat_screen.dart`.
+3.  **Updated Import Paths:** Updated all import paths to use `myapp` instead of `zeeky_social`.
+4.  **Updated Class Names:** Renamed `ZeekyChatScreen` to `AIChatScreen` and updated all references.
+5.  **Updated Content:** Replaced all occurrences of "Zeeky Social" with "My Awesome App" in user-facing strings and comments.
+6.  **Updated `AIService`:** Updated the system prompt in `AIService` to reflect the new app name.

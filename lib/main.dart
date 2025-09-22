@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:zeeky_social/screens/auth_gate.dart';
-import 'package:zeeky_social/screens/chat_conversation_screen.dart';
-import 'package:zeeky_social/screens/zeeky_chat_screen.dart';
-import 'package:zeeky_social/screens/profile_screen.dart';
-import 'package:zeeky_social/screens/user_list_screen.dart';
-import 'package:zeeky_social/services/ai_service.dart';
-import 'package:zeeky_social/services/auth_service.dart';
-import 'package:zeeky_social/services/firestore_service.dart';
-import 'package:zeeky_social/services/storage_service.dart';
-import 'package:zeeky_social/models/post_model.dart';
-import 'package:zeeky_social/models/chat_room_model.dart';
+import 'package:myapp/screens/auth_gate.dart';
+import 'package:myapp/screens/chat_conversation_screen.dart';
+import 'package:myapp/screens/ai_chat_screen.dart';
+import 'package:myapp/screens/profile_screen.dart';
+import 'package:myapp/screens/user_list_screen.dart';
+import 'package:myapp/services/ai_service.dart';
+import 'package:myapp/services/auth_service.dart';
+import 'package:myapp/services/firestore_service.dart';
+import 'package:myapp/services/storage_service.dart';
+import 'package:myapp/models/post_model.dart';
+import 'package:myapp/models/chat_room_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
@@ -31,7 +31,7 @@ void main() async {
         Provider<AIService>(create: (_) => AIService()),
         Provider<StorageService>(create: (_) => StorageService()),
       ],
-      child: const ZeekySocialApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -47,15 +47,15 @@ class ThemeProvider with ChangeNotifier {
   }
 }
 
-class ZeekySocialApp extends StatelessWidget {
-  const ZeekySocialApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
         return MaterialApp(
-          title: 'Zeeky Social',
+          title: 'My Awesome App',
           theme: ThemeData(
             useMaterial3: true,
             brightness: Brightness.light,
@@ -148,14 +148,14 @@ class _MainScreenState extends State<MainScreen> {
     final authService = Provider.of<AuthService>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Zeeky Social'),
+        title: const Text('My Awesome App'),
         actions: [
           IconButton(
             icon: const Icon(Icons.psychology), // AI Icon
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ZeekyChatScreen()),
+                MaterialPageRoute(builder: (context) => const AIChatScreen()),
               );
             },
           ),
