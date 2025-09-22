@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:zeeky_social/screens/auth_gate.dart';
 import 'package:zeeky_social/screens/chat_conversation_screen.dart';
 import 'package:zeeky_social/screens/zeeky_chat_screen.dart';
+import 'package:zeeky_social/screens/profile_screen.dart';
 import 'package:zeeky_social/services/ai_service.dart';
 import 'package:zeeky_social/services/auth_service.dart';
 import 'package:zeeky_social/services/firestore_service.dart';
@@ -375,18 +375,6 @@ class ChatScreen extends StatelessWidget {
         onPressed: () => _showNewChatDialog(context),
         child: const Icon(Icons.add),
       ),
-    );
-  }
-}
-
-
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Profile Screen'),
     );
   }
 }

@@ -83,4 +83,15 @@ class FirestoreService {
       SetOptions(merge: true), // Use merge to create the doc if it doesn't exist
     );
   }
+
+  // Update user profile
+  Future<void> updateUserProfile(String userId, String displayName, String? photoURL) {
+    final Map<String, dynamic> userData = {
+      'displayName': displayName,
+    };
+    if (photoURL != null) {
+      userData['photoURL'] = photoURL;
+    }
+    return _db.collection('users').doc(userId).set(userData, SetOptions(merge: true));
+  }
 }
