@@ -49,11 +49,17 @@ class ProfileScreenState extends State<ProfileScreen> {
          final xfile = XFile(_profileImage!.path);
          profileImageUrl = await storageService.uploadImage(xfile);
       }
+      final Map<String, dynamic> dataToUpdate = {
+        'displayName': _displayNameController.text,
+      };
+
+      if(profileImageUrl != null){
+        dataToUpdate['photoURL'] = profileImageUrl;
+      }
 
       await firestoreService.updateUserProfile(
         currentUser.uid,
-        _displayNameController.text,
-        profileImageUrl,
+        dataToUpdate,
       );
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

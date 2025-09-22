@@ -38,7 +38,7 @@ class FirestoreService {
         .collection('chat_rooms')
         .doc(chatRoomId)
         .collection('messages')
-        .orderBy('timestamp', ascending: true)
+        .orderBy('timestamp')
         .snapshots();
   }
 
