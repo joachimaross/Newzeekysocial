@@ -14,16 +14,12 @@ This document outlines the architecture and implementation plan for a Flutter ap
 *   **Theming:** The application supports both light and dark themes.
 *   **Notifications:** Users receive push notifications for new messages.
 *   **App Check:** The application uses Firebase App Check to protect against abuse.
+*   **Generative AI Chat:** Users can chat with a generative AI model.
 
-### Current Plan: Re-implement Generative AI Chat
+### Current Plan: Verify Generative AI Chat
 
-This plan outlines the steps to re-implement the generative AI chat feature using the `firebase_ai` package. The previous implementation was removed to address dependency and build issues. This new implementation will be done in a careful, step-by-step manner to ensure stability.
+This plan outlines the final steps to verify the implementation of the generative AI chat feature.
 
 **Steps:**
 
-1.  **Add `firebase_ai` Dependency:** Add the `firebase_ai` package back to the `pubspec.yaml` file.
-2.  **Create `ai_service.dart`:** Create a new service file to encapsulate the logic for interacting with the Gemini API.
-3.  **Create `ai_chat_screen.dart`:** Create a new screen for the AI chat feature.
-4.  **Integrate `AIService`:** Provide the `AIService` to the application using `Provider`.
-5.  **Add Navigation:** Add a button to the `MainScreen` to navigate to the `AIChatScreen`.
-6.  **Verify Implementation:** Run `flutter analyze` and `flutter run` to verify that the new implementation is free of errors.
+1.  **Verify Implementation:** Run `flutter analyze` and `flutter run` to verify that the new implementation is free of errors and that the AI chat feature is working as expected.

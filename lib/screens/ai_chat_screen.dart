@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:myapp/services/ai_service.dart';
+import '../services/ai_service.dart';
 
 class AIChatScreen extends StatefulWidget {
   const AIChatScreen({super.key});
 
   @override
-  AIChatScreenState createState() => AIChatScreenState();
+  State<AIChatScreen> createState() => _AIChatScreenState();
 }
 
-class AIChatScreenState extends State<AIChatScreen> {
+class _AIChatScreenState extends State<AIChatScreen> {
   final TextEditingController _controller = TextEditingController();
-  final List<Map<String, String>> _messages = [];
+  final List<Map<String, String>> _conversation = [];
   bool _isLoading = false;
 
   void _sendMessage() async {
-    final text = _controller.text;
-    if (text.isEmpty) return;
+    final prompt = _controller.text;
+    if (prompt.isEmpty) return;
 
     setState(() {
-      _messages.add({'sender': 'user', 'text': text});
+      _conversation.add({'role': 'user', 'text': prompt});
       _isLoading = true;
     });
 
     _controller.clear();
 
     final aiService = Provider.of<AIService>(context, listen: false);
-    final response = await aiService.generateText(text);
+    final response = await aiService.generateText(prompt);
 
     setState(() {
-      _messages.add({'sender': 'ai', 'text': response});
+      _conversation.add({'role': 'model', 'text': response});
       _isLoading = false;
     });
   }
@@ -44,24 +44,12 @@ class AIChatScreenState extends State<AIChatScreen> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: _messages.length,
+              itemCount: _conversation.length,
               itemBuilder: (context, index) {
-                final message = _messages[index];
-                final isUser = message['sender'] == 'user';
-                return Align(
-                  alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    margin: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: isUser ? Colors.blue : Colors.grey[300],
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Text(
-                      message['text']!,
-                      style: TextStyle(color: isUser ? Colors.white : Colors.black),
-                    ),
-                  ),
+                final message = _conversation[index];
+                return ListTile(
+                  title: Text(message['text']!),
+                  subtitle: Text(message['role']!),
                 );
               },
             ),
@@ -79,8 +67,7 @@ class AIChatScreenState extends State<AIChatScreen> {
                   child: TextField(
                     controller: _controller,
                     decoration: const InputDecoration(
-                      hintText: 'Ask me anything...',
-                      border: OutlineInputBorder(),
+                      hintText: 'Enter a prompt...',
                     ),
                     onSubmitted: (_) => _sendMessage(),
                   ),
