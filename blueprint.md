@@ -13,6 +13,7 @@ This document outlines the structure and features of the "My Awesome App" Flutte
 - **AI Assistant:** A friendly AI assistant to answer user questions and provide help.
 - **Profile:** A profile screen where users can view their information.
 - **Theming:** The app supports both light and dark themes.
+- **Push Notifications:** The app can receive push notifications.
 
 ## Project Structure
 
@@ -26,6 +27,8 @@ lib
 │   ├── ai_chat_screen.dart
 │   ├── auth_gate.dart
 │   ├── chat_conversation_screen.dart
+│   ├── chat_screen.dart
+│   ├── feed_screen.dart
 │   ├── home_screen.dart
 │   ├── login_screen.dart
 │   ├── profile_screen.dart
@@ -35,20 +38,36 @@ lib
 │   ├── ai_service.dart
 │   ├── auth_service.dart
 │   ├── firestore_service.dart
+│   ├── notification_service.dart
 │   └── storage_service.dart
 ├── main.dart
 └── firebase_options.dart
 ```
 
-## Current Task: Refactor App Name
+## Improvements
 
-**Goal:** Rename the app from "Zeeky Social" to "My Awesome App".
+### Enhanced Security with Firebase App Check
+- **Description:** Integrated Firebase App Check to protect the app's backend resources from abuse, such as billing fraud or phishing. This is a crucial security feature for any production application.
+- **Implementation:**
+  - Added the `firebase_app_check` dependency to `pubspec.yaml`.
+  - Initialized App Check in `lib/main.dart` using the `PlayIntegrity` provider for Android and `ReCaptchaV3Provider` for web.
 
-**Steps Taken:**
+### Improved Code Organization
+- **Description:** Refactored the main UI components into separate files to improve code readability, maintainability, and scalability. This follows the principle of separation of concerns.
+- **Implementation:**
+  - Moved the `FeedScreen` widget into its own file at `lib/screens/feed_screen.dart`.
+  - Created a `PostListItem` widget within `feed_screen.dart` to encapsulate the UI for a single post.
+  - Moved the `ChatScreen` widget into its own file at `lib/screens/chat_screen.dart`.
+  - Created a `ChatListItem` widget within `chat_screen.dart` to encapsulate the UI for a single chat room entry.
+  - Updated `lib/main.dart` to import the new screen files.
 
-1.  **Updated `pubspec.yaml`:** Changed the project name from `zeeky_social` to `myapp`.
-2.  **Renamed Files:** Renamed `lib/screens/zeeky_chat_screen.dart` to `lib/screens/ai_chat_screen.dart`.
-3.  **Updated Import Paths:** Updated all import paths to use `myapp` instead of `zeeky_social`.
-4.  **Updated Class Names:** Renamed `ZeekyChatScreen` to `AIChatScreen` and updated all references.
-5.  **Updated Content:** Replaced all occurrences of "Zeeky Social" with "My Awesome App" in user-facing strings and comments.
-6.  **Updated `AIService`:** Updated the system prompt in `AIService` to reflect the new app name.
+## Known Issues
+
+### Persistent Build Error: `FirebaseVertexAI` Not Defined
+- **Description:** The project consistently fails to build with an error indicating that `FirebaseVertexAI` is not defined in `AIService`. This prevents the application from running.
+- **Troubleshooting Steps Taken:**
+  1.  **`flutter clean` and `flutter pub get`:** Performed a clean build and fetched dependencies multiple times.
+  2.  **Reinstalled Dependencies:** Removed and re-added the `firebase_ai` package to `pubspec.yaml`.
+  3.  **Code Verification:** Confirmed that the `firebase_ai` package is correctly imported and used in `lib/services/ai_service.dart`.
+  4.  **Environment Check:** The persistence of the error suggests a potential issue within the development environment or a deeper dependency conflict that is not immediately apparent.
+- **Status:** The issue is currently unresolved and is blocking further development and testing. The next step is to investigate the build environment and explore more advanced dependency debugging techniques.

@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:myapp/screens/auth_gate.dart';
-import 'package:myapp/screens/chat_conversation_screen.dart';
 import 'package:myapp/screens/ai_chat_screen.dart';
 import 'package:myapp/screens/profile_screen.dart';
-import 'package:myapp/screens/user_list_screen.dart';
+import 'package:myapp/screens/feed_screen.dart';
+import 'package:myapp/screens/chat_screen.dart';
 import 'package:myapp/services/ai_service.dart';
 import 'package:myapp/services/auth_service.dart';
 import 'package:myapp/services/firestore_service.dart';
 import 'package:myapp/services/storage_service.dart';
-import 'package:myapp/services/notification_service.dart'; // Import NotificationService
-import 'package:myapp/models/post_model.dart';
-import 'package:myapp/models/chat_room_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:myapp/services/notification_service.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -22,6 +20,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await FirebaseAppCheck.instance.activate(
+    web: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+    androidProvider: AndroidProvider.playIntegrity,
+  );
+
   runApp(
     MultiProvider(
       providers: [
@@ -30,7 +34,6 @@ void main() async {
         Provider<FirestoreService>(create: (_) => FirestoreService()),
         Provider<AIService>(create: (_) => AIService()),
         Provider<StorageService>(create: (_) => StorageService()),
-        // ProxyProvider for NotificationService
         ProxyProvider<FirestoreService, NotificationService>(
           update: (context, firestoreService, previous) =>
               NotificationService(firestoreService),
@@ -79,7 +82,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           themeMode: themeProvider.themeMode,
-          home: const AuthGate(), // Set AuthGate as the home
+          home: const AuthGate(),
         );
       },
     );
@@ -226,139 +229,6 @@ class MainScreenState extends State<MainScreen> {
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-      ),
-    );
-  }
-}
-
-class FeedScreen extends StatelessWidget {
-  const FeedScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final firestoreService = Provider.of<FirestoreService>(context);
-
-    return StreamBuilder<QuerySnapshot>(
-      stream: firestoreService.getPostsStream(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: \${snapshot.error}'));
-        }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text('No posts yet.'));
-        }
-
-        final posts = snapshot.data!.docs.map((doc) {
-           final data = doc.data() as Map<String, dynamic>;
-           return Post(
-             id: doc.id,
-             content: data['content'] ?? '',
-             userId: data['userId'] ?? '',
-             timestamp: (data['timestamp'] as Timestamp?)?.toDate() ?? DateTime.now(),
-           );
-        }).toList();
-
-        return ListView.builder(
-          itemCount: posts.length,
-          itemBuilder: (context, index) {
-            final post = posts[index];
-            return Card(
-              margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      post.content,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    const SizedBox(height: 8.0),
-                    Text(
-                      'Posted by: \${post.userId.substring(0, 6)}...', // Displaying a shortened user ID for anonymity
-                       style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-}
-
-class ChatScreen extends StatelessWidget {
-  const ChatScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final firestoreService = Provider.of<FirestoreService>(context);
-
-    return Scaffold(
-      body: StreamBuilder<QuerySnapshot>(
-        stream: firestoreService.getChatRoomsStream(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: \${snapshot.error}'));
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('No chats yet. Start a new one!'));
-          }
-
-          final chatRooms = snapshot.data!.docs.map((doc) {
-            final data = doc.data() as Map<String, dynamic>;
-            return ChatRoom(
-              id: doc.id,
-              userIds: List<String>.from(data['userIds'] ?? []),
-              lastMessage: data['lastMessage'] ?? '',
-              lastMessageTimestamp: (data['lastMessageTimestamp'] as Timestamp?)?.toDate() ?? DateTime.now(),
-            );
-          }).toList();
-
-          return ListView.builder(
-            itemCount: chatRooms.length,
-            itemBuilder: (context, index) {
-              final chatRoom = chatRooms[index];
-              final authService = Provider.of<AuthService>(context, listen: false);
-              final currentUserId = authService.currentUser!.uid;
-              final otherUserId = chatRoom.userIds.firstWhere((id) => id != currentUserId, orElse: () => 'Unknown');
-
-              return ListTile(
-                title: Text('Chat with \${otherUserId.substring(0, 6)}...'),
-                subtitle: Text(chatRoom.lastMessage),
-                trailing: Text('\${chatRoom.lastMessageTimestamp.hour}:\${chatRoom.lastMessageTimestamp.minute}'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ChatConversationScreen(
-                        chatRoomId: chatRoom.id,
-                        receiverId: otherUserId,
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const UserListScreen()),
-          );
-        },
-        child: const Icon(Icons.person_add),
       ),
     );
   }
