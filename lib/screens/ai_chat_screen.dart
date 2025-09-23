@@ -10,25 +10,26 @@ class AIChatScreen extends StatefulWidget {
 }
 
 class AIChatScreenState extends State<AIChatScreen> {
-  final TextEditingController _promptController = TextEditingController();
-  final List<Map<String, String>> _conversation = [];
+  final TextEditingController _controller = TextEditingController();
+  final List<Map<String, String>> _messages = [];
   bool _isLoading = false;
 
-  Future<void> _sendPrompt() async {
-    if (_promptController.text.isEmpty) return;
+  void _sendMessage() async {
+    final text = _controller.text;
+    if (text.isEmpty) return;
 
-    final prompt = _promptController.text;
     setState(() {
-      _conversation.add({'sender': 'user', 'text': prompt});
+      _messages.add({'sender': 'user', 'text': text});
       _isLoading = true;
-      _promptController.clear();
     });
 
+    _controller.clear();
+
     final aiService = Provider.of<AIService>(context, listen: false);
-    final response = await aiService.getResponse(prompt);
+    final response = await aiService.generateText(text);
 
     setState(() {
-      _conversation.add({'sender': 'ai', 'text': response});
+      _messages.add({'sender': 'ai', 'text': response});
       _isLoading = false;
     });
   }
@@ -43,24 +44,22 @@ class AIChatScreenState extends State<AIChatScreen> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: _conversation.length,
+              itemCount: _messages.length,
               itemBuilder: (context, index) {
-                final message = _conversation[index];
+                final message = _messages[index];
                 final isUser = message['sender'] == 'user';
                 return Align(
                   alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
                   child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                     padding: const EdgeInsets.all(12),
+                    margin: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: isUser ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
+                      color: isUser ? Colors.blue : Colors.grey[300],
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Text(
                       message['text']!,
-                      style: TextStyle(
-                        color: isUser ? Colors.white : Colors.black,
-                      ),
+                      style: TextStyle(color: isUser ? Colors.white : Colors.black),
                     ),
                   ),
                 );
@@ -78,16 +77,17 @@ class AIChatScreenState extends State<AIChatScreen> {
               children: [
                 Expanded(
                   child: TextField(
-                    controller: _promptController,
+                    controller: _controller,
                     decoration: const InputDecoration(
-                      hintText: 'Ask the AI anything...',
+                      hintText: 'Ask me anything...',
+                      border: OutlineInputBorder(),
                     ),
-                    onSubmitted: (_) => _sendPrompt(),
+                    onSubmitted: (_) => _sendMessage(),
                   ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.send),
-                  onPressed: _sendPrompt,
+                  onPressed: _sendMessage,
                 ),
               ],
             ),

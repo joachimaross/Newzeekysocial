@@ -15,7 +15,7 @@ class FeedScreen extends StatelessWidget {
       stream: firestoreService.getPostsStream(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Center(child: Text('Error: \${snapshot.error}'));
+          return const Center(child: Text('Error: \${snapshot.error}'));
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());

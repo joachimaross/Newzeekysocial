@@ -23,7 +23,7 @@ class FirestoreService {
   Stream<QuerySnapshot> getChatRoomsStream() {
     final currentUser = _auth.currentUser;
     if (currentUser == null) {
-      return Stream.empty();
+      return const Stream.empty();
     }
     return _db
         .collection('chat_rooms')

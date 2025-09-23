@@ -47,7 +47,7 @@ class NotificationService {
   }
 
   Future<void> _requestPermission() async {
-    NotificationSettings settings = await _firebaseMessaging.requestPermission(
+    await _firebaseMessaging.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
@@ -56,7 +56,7 @@ class NotificationService {
       provisional: false,
       sound: true,
     );
-    developer.log('User granted permission: \${settings.authorizationStatus}', name: 'myapp.notification');
+    // developer.log('User granted permission: \${settings.authorizationStatus}', name: 'myapp.notification');
   }
 
   Future<String?> _getFCMToken() async {

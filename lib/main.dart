@@ -22,7 +22,7 @@ void main() async {
   );
 
   await FirebaseAppCheck.instance.activate(
-    web: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+    providerWeb: ReCaptchaV3Provider('recaptcha-v3-site-key'),
     androidProvider: AndroidProvider.playIntegrity,
   );
 
@@ -102,7 +102,9 @@ class MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeNotifications();
+    WidgetsBinding.instance.addPostFrameCallback((_) { 
+      _initializeNotifications();
+    });
   }
 
   void _initializeNotifications() async {
@@ -129,13 +131,10 @@ class MainScreenState extends State<MainScreen> {
 
   void _showAddPostDialog() {
     final postController = TextEditingController();
-    final firestoreService = Provider.of<FirestoreService>(context, listen: false);
-    final authService = Provider.of<AuthService>(context, listen: false);
-    final currentUser = authService.currentUser;
 
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (dialogContext) {
         return AlertDialog(
           title: const Text('New Post'),
           content: TextField(
@@ -145,18 +144,21 @@ class MainScreenState extends State<MainScreen> {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(dialogContext),
               child: const Text('Cancel'),
             ),
             ElevatedButton(
               onPressed: () async {
+                final firestoreService = Provider.of<FirestoreService>(context, listen: false);
+                final authService = Provider.of<AuthService>(context, listen: false);
+                final currentUser = authService.currentUser;
+                final navigator = Navigator.of(dialogContext);
                 if (postController.text.isNotEmpty && currentUser != null) {
                   await firestoreService.addPost(
                     postController.text,
                     currentUser.uid,
                   );
-                  if (!mounted) return;
-                  Navigator.pop(context);
+                  navigator.pop();
                 }
               },
               child: const Text('Post'),

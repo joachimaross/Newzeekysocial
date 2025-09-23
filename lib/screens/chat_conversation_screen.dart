@@ -49,7 +49,7 @@ class ChatConversationScreenState extends State<ChatConversationScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat with \${widget.receiverId.substring(0, 6)}...'),
+        title: const Text('Chat with \${widget.receiverId.substring(0, 6)}...'),
       ),
       body: Column(
         children: [
@@ -58,7 +58,7 @@ class ChatConversationScreenState extends State<ChatConversationScreen> {
               stream: firestoreService.getMessagesStream(widget.chatRoomId),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return Center(child: Text('Error: \${snapshot.error}'));
+                  return const Center(child: Text('Error: \${snapshot.error}'));
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -90,7 +90,7 @@ class ChatConversationScreenState extends State<ChatConversationScreen> {
                       title: isImage
                           ? Image.network(message.message)
                           : Text(message.message),
-                      subtitle: Text('From: \${message.senderId.substring(0, 6)}...'),
+                      subtitle: const Text('From: \${message.senderId.substring(0, 6)}...'),
                     );
                   },
                 );

@@ -16,7 +16,7 @@ class AuthService {
         email: email,
         password: password,
       );
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       // Handle specific Firebase errors (e.g., email-already-in-use)
       rethrow;
     }
@@ -29,7 +29,7 @@ class AuthService {
         email: email,
         password: password,
       );
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       // Handle specific Firebase errors (e.g., user-not-found, wrong-password)
       rethrow;
     }

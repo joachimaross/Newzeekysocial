@@ -21,7 +21,7 @@ class ChatScreen extends StatelessWidget {
         stream: firestoreService.getChatRoomsStream(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(child: Text('Error: \${snapshot.error}'));
+            return const Center(child: Text('Error: \${snapshot.error}'));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -72,9 +72,9 @@ class ChatListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text('Chat with \${otherUserId.substring(0, 6)}...'),
+      title: const Text('Chat with \${otherUserId.substring(0, 6)}...'),
       subtitle: Text(chatRoom.lastMessage),
-      trailing: Text('\${chatRoom.lastMessageTimestamp.hour}:\${chatRoom.lastMessageTimestamp.minute}'),
+      trailing: const Text('\${chatRoom.lastMessageTimestamp.hour}:\${chatRoom.lastMessageTimestamp.minute}'),
       onTap: () {
         Navigator.push(
           context,

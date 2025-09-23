@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:developer' as developer;
 
 class StorageService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -13,7 +14,7 @@ class StorageService {
       final TaskSnapshot snapshot = await uploadTask;
       return await snapshot.ref.getDownloadURL();
     } catch (e) {
-      print('Error uploading image: $e');
+      developer.log('Error uploading image: $e', name: 'myapp.storage', error: e);
       return null;
     }
   }
