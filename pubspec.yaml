@@ -20,7 +20,7 @@ dependencies:
   firebase_storage: ^12.1.0
   firebase_messaging: ^15.0.1
   firebase_app_check: ^0.3.0
-  firebase_ai: ^0.5.1
+  firebase_ai: ^2.3.0
 
   # UI & Utilities
   google_fonts: ^6.2.1
