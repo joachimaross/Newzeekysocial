@@ -73,7 +73,7 @@ class EnvironmentConfig {
           messagingSenderId: _getEnvVar('FIREBASE_MESSAGING_SENDER_ID', '961063588565'),
           projectId: _getEnvVar('FIREBASE_PROJECT_ID', 'gen-lang-client-0610030211'),
           storageBucket: _getEnvVar('FIREBASE_STORAGE_BUCKET', 'gen-lang-client-0610030211.firebasestorage.app'),
-          iosBundleId: _getEnvVar('FIREBASE_IOS_BUNDLE_ID', 'com.example.myap'),
+          iosBundleId: _getEnvVar('FIREBASE_IOS_BUNDLE_ID', 'com.example.myapp'),
         );
       case TargetPlatform.macOS:
         return FirebaseOptions(
