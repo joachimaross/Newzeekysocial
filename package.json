@@ -6,8 +6,14 @@
   "scripts": {
     "build": "flutter build web --release --web-renderer html",
     "build:canvaskit": "flutter build web --release --web-renderer canvaskit",
+    "build:dev": "flutter build web --debug --web-renderer html --source-maps",
+    "build:profile": "flutter build web --profile --web-renderer html",
     "dev": "flutter run -d web-server --web-port=3000",
+    "dev:netlify": "netlify dev --config netlify.dev.toml",
     "serve": "flutter run -d web-server --web-port=8080 --release",
+    "deploy:dev": "./scripts/deploy-dev.sh",
+    "deploy:preview": "./scripts/deploy-dev.sh preview",
+    "deploy:prod": "./scripts/deploy-dev.sh production",
     "analyze": "flutter analyze",
     "test": "flutter test",
     "clean": "flutter clean"

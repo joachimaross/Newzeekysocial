@@ -48,4 +48,16 @@ app.*.map.json
 .env
 .env.local
 .env.*.local
+.env.development  # Template file, actual config should be set in Netlify
 .vercel
+
+# Development and deployment artifacts
+.netlify/
+netlify-functions/
+dist/
+tmp/
+logs/
+
+# Development configuration backups
+*.backup
+*.tmp

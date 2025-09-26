@@ -2,6 +2,8 @@
 
 This guide provides instructions for deploying the Zeeky Social Flutter web application to various hosting platforms.
 
+> **📖 For Development-Specific Deployment:** See [DEVELOPMENT_DEPLOYMENT.md](./DEVELOPMENT_DEPLOYMENT.md) for detailed development environment setup and deployment instructions.
+
 ## 🚀 Supported Platforms
 
 ### Vercel
@@ -11,10 +13,11 @@ This guide provides instructions for deploying the Zeeky Social Flutter web appl
 - ✅ SPA routing support
 
 ### Netlify  
-- ✅ Configuration: `netlify.toml`
+- ✅ Configuration: `netlify.toml` (production) / `netlify.dev.toml` (development)
 - ✅ Auto-deployment from GitHub
 - ✅ Built-in CDN and SSL
 - ✅ SPA routing support
+- ✅ Development functions for debugging
 
 ### Firebase Hosting
 - ✅ Configuration: `firebase.json` (hosting section)
