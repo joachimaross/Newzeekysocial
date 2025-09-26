@@ -91,7 +91,7 @@ fi
 # Check Firebase options
 if [ -f "lib/firebase_options.dart" ]; then
     echo "✅ Firebase options exist"
-    if grep -q "iosProvider.*deviceCheck" lib/main.dart; then
+    if grep -q "iosProvider: IOSProvider\.deviceCheck" lib/main.dart; then
         echo "✅ iOS App Check provider configured"
     else
         echo "❌ iOS App Check provider not configured"
