@@ -172,7 +172,7 @@ class EnvironmentConfig {
     final missing = <String>[];
     
     for (final variable in requiredVars) {
-      if (!dotenv.env.containsKey(variable) || dotenv.env[variable]!.isEmpty) {
+      if (!dotenv.env.containsKey(variable) || (dotenv.env[variable]?.isEmpty ?? true)) {
         missing.add(variable);
       }
     }
