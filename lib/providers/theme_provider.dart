@@ -9,9 +9,17 @@ class ThemeProvider with ChangeNotifier {
 
   /// Toggle between light and dark theme
   void toggleTheme() {
-    _themeMode = _themeMode == ThemeMode.light 
-        ? ThemeMode.dark 
-        : ThemeMode.light;
+    switch (_themeMode) {
+      case ThemeMode.light:
+        _themeMode = ThemeMode.dark;
+        break;
+      case ThemeMode.dark:
+        _themeMode = ThemeMode.light;
+        break;
+      case ThemeMode.system:
+        _themeMode = ThemeMode.dark;
+        break;
+    }
     
     developer.log(
       'Theme toggled to: ${_themeMode.name}',
