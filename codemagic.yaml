@@ -1,0 +1,20 @@
+# Codemagic configuration file
+workflows:
+  ios-build:
+    name: iOS Build Workflow
+    environment:
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Install dependencies
+        script: pod install
+      - name: Build the project
+        script: xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Debug
+      - name: Run tests
+        script: xcodebuild test -workspace ios/Runner.xcworkspace -scheme Runner -destination "platform=iOS Simulator,name=iPhone 12,OS=14.4"
+    artifacts:
+      - build/ios/**/*.ipa
+    publishing:
+      app_store:
+        apple_id: YOUR_APPLE_ID
+        bundle_id: YOUR_BUNDLE_ID
