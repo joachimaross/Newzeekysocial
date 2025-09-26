@@ -1,3 +1,6 @@
+# Production Netlify configuration for Zeeky Social
+# For development-specific configuration, see netlify.dev.toml
+
 [build]
   base = "."
   command = "flutter build web --release --web-renderer html"
@@ -8,6 +11,15 @@
   FLUTTER_VERSION = "3.24.0"
   FLUTTER_BUILD_MODE = "release"
   FLUTTER_WEB_USE_SKIA = "false"
+  NODE_ENV = "production"
+  
+  # Production Firebase Configuration (use environment variables)
+  FIREBASE_API_KEY = "${FIREBASE_API_KEY}"
+  FIREBASE_AUTH_DOMAIN = "${FIREBASE_AUTH_DOMAIN}"
+  FIREBASE_PROJECT_ID = "${FIREBASE_PROJECT_ID}"
+  FIREBASE_STORAGE_BUCKET = "${FIREBASE_STORAGE_BUCKET}"
+  FIREBASE_MESSAGING_SENDER_ID = "${FIREBASE_MESSAGING_SENDER_ID}"
+  FIREBASE_APP_ID = "${FIREBASE_APP_ID}"
 
 # Cache Flutter SDK and dependencies
 [build.processing]
@@ -64,6 +76,30 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Plugin configuration
+# Plugin configuration for production
 [[plugins]]
   package = "@netlify/plugin-flutter"
+  
+  [plugins.inputs]
+    version = "3.24.0"
+    cache = true
+
+# Production environment contexts
+[context.production]
+  command = "flutter build web --release --web-renderer html"
+  
+  [context.production.environment]
+    NODE_ENV = "production"
+    FLUTTER_BUILD_MODE = "release"
+
+[context.deploy-preview]
+  command = "flutter build web --profile --web-renderer html"
+  
+  [context.deploy-preview.environment]
+    NODE_ENV = "staging"
+    FLUTTER_BUILD_MODE = "profile"
+
+# Functions configuration for production
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"

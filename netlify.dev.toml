@@ -1,0 +1,124 @@
+# Development-specific Netlify configuration for Zeeky Social
+# This file is optimized for development builds and local testing
+
+[build]
+  base = "."
+  command = "flutter build web --debug --web-renderer html --source-maps"
+  publish = "build/web"
+  ignore = "/bin/false"  # Never skip builds in development
+
+[build.environment]
+  NODE_VERSION = "18"
+  FLUTTER_VERSION = "3.24.0"
+  FLUTTER_BUILD_MODE = "debug"
+  FLUTTER_WEB_USE_SKIA = "false"
+  NODE_ENV = "development"
+  
+  # Development Firebase Configuration (use environment variables)
+  FIREBASE_API_KEY = "${FIREBASE_API_KEY}"
+  FIREBASE_AUTH_DOMAIN = "${FIREBASE_AUTH_DOMAIN}"
+  FIREBASE_PROJECT_ID = "${FIREBASE_PROJECT_ID}"
+  FIREBASE_STORAGE_BUCKET = "${FIREBASE_STORAGE_BUCKET}"
+  FIREBASE_MESSAGING_SENDER_ID = "${FIREBASE_MESSAGING_SENDER_ID}"
+  FIREBASE_APP_ID = "${FIREBASE_APP_ID}"
+
+# Development build processing - more verbose, less optimized for debugging
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = false
+  minify = false  # Keep CSS readable for development
+
+[build.processing.js]
+  bundle = false
+  minify = false  # Keep JavaScript readable for development
+
+[build.processing.html]
+  pretty_urls = true
+
+# Development server settings
+[dev]
+  command = "flutter run -d web-server --web-port=3000 --debug"
+  port = 3000
+  targetPort = 3000
+  publish = "build/web"
+  autoLaunch = true
+
+# SPA redirect rules for Flutter Router
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Development-friendly headers (less caching, more debugging info)
+[[headers]]
+  for = "/flutter_service_worker.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Pragma = "no-cache"
+    Expires = "0"
+
+[[headers]]
+  for = "/version.json"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Pragma = "no-cache"
+    Expires = "0"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "no-cache, max-age=0"  # Reduced caching for development
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "no-cache, max-age=0"  # Reduced caching for development
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=300"  # Short cache for assets in development
+
+# Development security headers (less restrictive for testing)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"  # Less restrictive than DENY for development
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer-when-downgrade"
+    # Allow development tools and debugging
+    Content-Security-Policy = "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: *; connect-src 'self' ws: wss: *;"
+
+# Plugin configuration for development
+[[plugins]]
+  package = "@netlify/plugin-flutter"
+  
+  [plugins.inputs]
+    version = "3.24.0"
+    cache = true
+
+# Development functions configuration
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+  included_files = ["lib/**", "web/**"]
+
+# Development context-specific settings
+[context.dev]
+  command = "flutter build web --debug --web-renderer html --source-maps"
+  
+[context.dev.environment]
+  NODE_ENV = "development"
+  FLUTTER_BUILD_MODE = "debug"
+  FLUTTER_WEB_USE_SKIA = "false"
+
+[context.branch-deploy]
+  command = "flutter build web --profile --web-renderer html"
+  
+[context.branch-deploy.environment]
+  NODE_ENV = "development" 
+  FLUTTER_BUILD_MODE = "profile"
+  FLUTTER_WEB_USE_SKIA = "false"
