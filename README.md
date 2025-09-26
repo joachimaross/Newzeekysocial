@@ -55,23 +55,134 @@ This is not just another app. Zeeky Social is the blueprint for the future of di
 ---
 
 ## 📦 Installation & Setup
+
+### Prerequisites
+- Flutter SDK (>=3.0.0)
+- For iOS: Xcode 12.0 or later, iOS 12.0+ deployment target
+- For Android: Android Studio with Android SDK
+- Firebase project with iOS and Android apps configured
+
+### General Setup
 1. Clone the repo:
    ```bash
    git clone https://github.com/joachimaross/Newzeekysocial.git
    cd Newzeekysocial
    ```
-2. Install dependencies:
+
+2. Install Flutter dependencies:
    ```bash
-   npm install
+   flutter pub get
    ```
-3. Run the development server:
+
+### iOS Setup & Firebase Configuration
+
+#### 1. Install CocoaPods Dependencies
+```bash
+cd ios
+pod install
+cd ..
+```
+
+#### 2. Firebase Project Configuration
+1. **Create Firebase Project**: 
+   - Go to [Firebase Console](https://console.firebase.google.com/)
+   - Create a new project or select existing one
+   
+2. **Add iOS App to Firebase**:
+   - Click "Add app" and select iOS
+   - Use bundle ID: `com.example.myap`
+   - Download `GoogleService-Info.plist` (optional - app uses programmatic configuration)
+
+3. **Enable Firebase Services**:
+   - **Authentication**: Enable sign-in methods (Email/Password, Google, etc.)
+   - **Firestore Database**: Create database in production mode
+   - **Storage**: Set up Firebase Storage with appropriate security rules
+   - **App Check**: Configure App Check with iOS DeviceCheck provider
+   - **Cloud Messaging**: Enable for push notifications
+
+#### 3. Build and Run iOS
+```bash
+# Open iOS project in Xcode (optional)
+open ios/Runner.xcworkspace
+
+# Run on iOS simulator
+flutter run -d ios
+
+# Run on physical iPhone device (requires Apple Developer account)
+flutter run -d <device_id>
+```
+
+#### 4. iOS-Specific Configuration Notes
+- **Minimum iOS Version**: 12.0+
+- **Bundle Identifier**: `com.example.myap` (matches Firebase configuration)
+- **Permissions**: Camera and Photo Library access configured for image uploads
+- **Firebase Integration**: Uses programmatic Firebase configuration via `firebase_options.dart`
+- **App Check**: Configured with `IOSProvider.deviceCheck` for production security
+
+### Android Setup
+1. Configure Android signing keys and Firebase setup following standard Flutter practices
+2. Run with: `flutter run -d android`
+
+### Web Setup
+1. Configure Firebase for web platform
+2. Run with: `flutter run -d chrome`
+
+### Development Workflow
+```bash
+# Development server
+flutter run
+
+# Hot reload during development
+# Press 'r' in terminal or save files in IDE
+
+# Build for release
+flutter build ios --release
+flutter build apk --release
+```
+
+### Firebase Services Used
+- **Firebase Core**: App initialization and configuration
+- **Firebase Auth**: User authentication and management  
+- **Cloud Firestore**: Real-time database for posts and user data
+- **Firebase Storage**: Image and file uploads
+- **Firebase Messaging**: Push notifications
+- **Firebase App Check**: Security and abuse prevention
+- **Firebase AI**: Generative AI chat features (Gemini integration)
+
+### Troubleshooting iOS Build Issues
+
+#### Common Issues & Solutions
+
+1. **CocoaPods Issues**:
    ```bash
-   npm run dev
+   cd ios
+   pod deintegrate
+   pod install
+   cd ..
    ```
-4. For mobile builds (Flutter):
+
+2. **Xcode Build Errors**:
+   - Ensure Xcode is up to date (12.0+)
+   - Check iOS deployment target is set to 12.0+
+   - Clean build folder: `flutter clean && flutter pub get`
+
+3. **Firebase Configuration Issues**:
+   - Verify bundle ID matches Firebase project: `com.example.myap`
+   - Ensure all Firebase services are enabled in Firebase Console
+   - Check `firebase_options.dart` has correct iOS configuration
+
+4. **Device/Simulator Issues**:
    ```bash
-   flutter run
+   # List available devices
+   flutter devices
+   
+   # Run on specific device
+   flutter run -d "iPhone 14 Pro"
    ```
+
+5. **Permission Issues**:
+   - Camera/Photo permissions are configured in Info.plist
+   - For production, ensure proper provisioning profiles and certificates
 
 ---
 
