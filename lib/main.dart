@@ -24,6 +24,7 @@ void main() async {
   await FirebaseAppCheck.instance.activate(
     providerWeb: ReCaptchaV3Provider('recaptcha-v3-site-key'),
     androidProvider: AndroidProvider.playIntegrity,
+    iosProvider: IOSProvider.deviceCheck,
   );
 
   runApp(
