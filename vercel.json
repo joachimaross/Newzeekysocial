@@ -1,0 +1,48 @@
+{
+  "version": 2,
+  "name": "zeeky-social",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build/web"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/flutter_service_worker.js",
+      "headers": { "Cache-Control": "no-cache" }
+    },
+    {
+      "src": "/version.json",
+      "headers": { "Cache-Control": "no-cache" }
+    },
+    {
+      "src": "/(.*\\.(js|css|woff2?|ico|png|jpe?g|gif|svg|webp|ttf|eot|otf|wasm)$)",
+      "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "env": {
+    "FLUTTER_WEB_USE_SKIA": "false",
+    "FLUTTER_WEB_CANVASKIT_URL": "https://unpkg.com/canvaskit-wasm@0.34.0/bin/",
+    "NODE_ENV": "production"
+  },
+  "build": {
+    "env": {
+      "NODE_ENV": "production",
+      "FLUTTER_BUILD_MODE": "release"
+    }
+  },
+  "functions": {
+    "**": {
+      "maxDuration": 30
+    }
+  },
+  "outputDirectory": "build/web"
+}
