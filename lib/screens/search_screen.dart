@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:myapp/services/search_service.dart';
-import 'package:myapp/services/ai_service.dart';
-import 'package:myapp/models/post_model.dart';
-import 'package:myapp/models/user_model.dart';
-import 'package:myapp/models/community_model.dart';
+import 'package:zeeky_social/services/search_service.dart';
+import 'package:zeeky_social/services/ai_service.dart';
+import 'package:zeeky_social/models/post_model.dart';
+import 'package:zeeky_social/models/user_model.dart';
+import 'package:zeeky_social/models/community_model.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});

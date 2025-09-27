@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:myapp/services/event_service.dart';
-import 'package:myapp/services/auth_service.dart';
-import 'package:myapp/models/event_model.dart';
+import 'package:zeeky_social/services/event_service.dart';
+import 'package:zeeky_social/services/auth_service.dart';
+import 'package:zeeky_social/models/event_model.dart';
 import 'package:intl/intl.dart';
 
 class EventsScreen extends StatefulWidget {

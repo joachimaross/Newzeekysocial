@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:myapp/models/story_model.dart';
-import 'package:myapp/services/media_service.dart';
-import 'package:myapp/services/notification_service.dart';
+import 'package:zeeky_social/models/story_model.dart';
+import 'package:zeeky_social/services/media_service.dart';
+import 'package:zeeky_social/services/notification_service.dart';
 
 class StoryService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

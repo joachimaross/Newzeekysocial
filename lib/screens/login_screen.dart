@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:myapp/services/auth_service.dart';
-import 'package:myapp/screens/signup_screen.dart';
+import 'package:zeeky_social/services/auth_service.dart';
+import 'package:zeeky_social/screens/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

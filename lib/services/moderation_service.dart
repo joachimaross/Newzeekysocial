@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:myapp/services/ai_service.dart';
+import 'package:zeeky_social/services/ai_service.dart';
 
 enum ModerationAction { none, warn, blur, remove, ban_user, restrict_user }
 enum ContentType { text, image, video, audio, profile }

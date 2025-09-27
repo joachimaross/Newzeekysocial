@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:myapp/services/firestore_service.dart';
-import 'package:myapp/services/storage_service.dart';
-import 'package:myapp/models/chat_message_model.dart';
+import 'package:zeeky_social/services/firestore_service.dart';
+import 'package:zeeky_social/services/storage_service.dart';
+import 'package:zeeky_social/models/chat_message_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ChatConversationScreen extends StatefulWidget {

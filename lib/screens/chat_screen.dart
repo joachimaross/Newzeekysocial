@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:myapp/models/chat_room_model.dart';
-import 'package:myapp/services/auth_service.dart';
-import 'package:myapp/services/firestore_service.dart';
-import 'package:myapp/screens/chat_conversation_screen.dart';
-import 'package:myapp/screens/user_list_screen.dart';
+import 'package:zeeky_social/models/chat_room_model.dart';
+import 'package:zeeky_social/services/auth_service.dart';
+import 'package:zeeky_social/services/firestore_service.dart';
+import 'package:zeeky_social/screens/chat_conversation_screen.dart';
+import 'package:zeeky_social/screens/user_list_screen.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});

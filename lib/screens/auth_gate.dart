@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:myapp/services/auth_service.dart';
-import 'package:myapp/screens/login_screen.dart';
+import 'package:zeeky_social/services/auth_service.dart';
+import 'package:zeeky_social/screens/login_screen.dart';
 import '../main.dart';
 
 class AuthGate extends StatelessWidget {
