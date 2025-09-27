@@ -1,0 +1,1 @@
+Enterprise repository pattern stub for user data.

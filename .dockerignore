@@ -1,0 +1,14 @@
+# Ignore dependencies and build artifacts
+node_modules
+dist
+.build
+*.log
+.env
+.env.*
+coverage
+*.tgz
+.cache
+.DS_Store
+.idea
+.vscode
+*.iml
