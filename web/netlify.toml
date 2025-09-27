@@ -1,0 +1,11 @@
+[build]
+  publish = "web/build"
+  command = "cd web && npm install && npm run build"
+
+[build.environment]
+  NODE_ENV = "production"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
