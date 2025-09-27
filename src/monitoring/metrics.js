@@ -1,0 +1,1 @@
+Prometheus metrics integration stub for enterprise observability.
