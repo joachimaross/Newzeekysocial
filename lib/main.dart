@@ -12,6 +12,7 @@ import 'package:zeeky_social/screens/stories_screen.dart';
 import 'package:zeeky_social/screens/events_screen.dart';
 import 'package:zeeky_social/screens/search_screen.dart';
 import 'package:zeeky_social/screens/communities_screen.dart';
+import 'package:zeeky_social/screens/content_studio_screen.dart';
 import 'package:zeeky_social/services/ai_service.dart';
 import 'package:zeeky_social/services/auth_service.dart';
 import 'package:zeeky_social/services/firestore_service.dart';
@@ -23,6 +24,7 @@ import 'package:zeeky_social/services/search_service.dart';
 import 'package:zeeky_social/services/story_service.dart';
 import 'package:zeeky_social/services/event_service.dart';
 import 'package:zeeky_social/services/moderation_service.dart';
+import 'package:zeeky_social/services/content_studio_service.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -45,6 +47,7 @@ void main() async {
         Provider(create: (_) => StorageService()),
         Provider(create: (_) => NotificationService()),
         Provider(create: (_) => AIService()),
+        Provider(create: (_) => ContentStudioService()),
         Provider(create: (_) => PresenceService()),
         Provider(create: (_) => MediaService()),
         Provider(create: (_) => SearchService()),
@@ -298,6 +301,14 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 },
               ),
               ListTile(
+                leading: const Icon(Icons.auto_awesome),
+                title: const Text('AI Content Studio'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _navigateToContentStudio();
+                },
+              ),
+              ListTile(
                 leading: const Icon(Icons.camera_alt),
                 title: const Text('Story'),
                 onTap: () {
@@ -326,6 +337,13 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
           ),
         ),
       ),
+    );
+  }
+
+  void _navigateToContentStudio() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ContentStudioScreen()),
     );
   }
 
@@ -466,6 +484,16 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
           ],
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.auto_awesome),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ContentStudioScreen()),
+              );
+            },
+            tooltip: 'AI Content Studio',
+          ),
           IconButton(
             icon: const Icon(Icons.psychology_outlined),
             onPressed: () {
