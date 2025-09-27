@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:myapp/models/post_model.dart';
-import 'package:myapp/services/firestore_service.dart';
+import 'package:zeeky_social/models/post_model.dart';
+import 'package:zeeky_social/services/firestore_service.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({super.key});

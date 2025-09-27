@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:myapp/services/story_service.dart';
-import 'package:myapp/services/auth_service.dart';
-import 'package:myapp/models/story_model.dart';
+import 'package:zeeky_social/services/story_service.dart';
+import 'package:zeeky_social/services/auth_service.dart';
+import 'package:zeeky_social/models/story_model.dart';
 
 class StoriesScreen extends StatefulWidget {
   const StoriesScreen({super.key});

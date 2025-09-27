@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:myapp/models/event_model.dart';
-import 'package:myapp/services/notification_service.dart';
+import 'package:zeeky_social/models/event_model.dart';
+import 'package:zeeky_social/services/notification_service.dart';
 
 class EventService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

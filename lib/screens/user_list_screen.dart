@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:myapp/models/user_model.dart';
-import 'package:myapp/screens/chat_conversation_screen.dart';
-import 'package:myapp/services/auth_service.dart';
+import 'package:zeeky_social/models/user_model.dart';
+import 'package:zeeky_social/screens/chat_conversation_screen.dart';
+import 'package:zeeky_social/services/auth_service.dart';
 
 class UserListScreen extends StatelessWidget {
   const UserListScreen({super.key});
