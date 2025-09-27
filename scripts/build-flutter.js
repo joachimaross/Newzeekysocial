@@ -31,7 +31,11 @@ try {
   // Test build for different platforms
   console.log('🧪 Testing Flutter builds...');
   execSync('flutter build apk --debug', { stdio: 'inherit' });
-  execSync('flutter build ios --debug', { stdio: 'inherit' });
+  if (process.platform === 'darwin') {
+    execSync('flutter build ios --debug', { stdio: 'inherit' });
+  } else {
+    console.log('⚠️  Skipping iOS build: not running on macOS.');
+  }
 
 } catch (error) {
   console.error('❌ Flutter setup failed:', error.message);
