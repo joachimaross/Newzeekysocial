@@ -93,12 +93,7 @@
     Content-Security-Policy = "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: *; connect-src 'self' ws: wss: *;"
 
 # Plugin configuration for development
-[[plugins]]
-  package = "@netlify/plugin-flutter"
-  
-  [plugins.inputs]
-    version = "3.24.0"
-    cache = true
+# Note: @netlify/plugin-flutter removed as it doesn't exist in npm registry
 
 # Development functions configuration
 [functions]
