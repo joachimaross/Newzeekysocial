@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability, please report it via [GitHub Issues](../../issues) or by email at security@jacameno.com.  
+If you discover a security vulnerability, please report it privately by emailing security@jacameno.com.  
 We will respond as quickly as possible to coordinate remediation.
 
 ## Security Best Practices
